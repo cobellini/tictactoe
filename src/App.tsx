@@ -7,25 +7,29 @@ const enum Player {
   Two = 2
 }
 
-// interface IState {
-//   board: Player[];
-// }
+interface IState{ 
+  board: Player[]
+}
 
-class App extends React.Component{
+interface IProps{
 
-public state = {
+}
+
+
+class App extends React.Component<IProps, IState>{
+
+ public state = {
   board: [Player.None, Player.None, Player.None, Player.None, Player.None, Player.None, Player.None, Player.None, Player.None],
  
 }
 
-
-public renderCell = (index: number) => {
+ _renderCell = (index: number) => {
   return <div className="cell" />
 }
-
-public renderBoard = () => {
+ 
+ _renderBoard = () => {
   const {board} = this.state;
-  return <div className="BoardContainer">{board.map((value, key) => this.renderCell(key))}</div>
+  return <div className="BoardContainer">{board.map((value, key) => this._renderCell(key))}</div>
 }
 
 
@@ -33,7 +37,7 @@ public renderBoard = () => {
     return (
       <div className="App">
           <div className="BoardContainer">
-            {this.renderBoard()}
+            {this._renderBoard()}
           </div>
       </div>
     );
