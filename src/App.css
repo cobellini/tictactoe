@@ -26,3 +26,26 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+
+.BoardContainer{
+  width: 150px;
+  height: 150px;
+  font-size: 0;
+  margin: auto;
+  padding-top: 75px;
+}
+
+.cell{
+  width: 50px;
+  height: 50px;  
+  display: inline-block;
+  font-size: 0;
+  background-color: red;
+  border:1px solid black;
+  box-sizing: border-box;
+}
+
+.cell:hover {
+  background-color:blue;
+}
