@@ -23,15 +23,18 @@ class App extends React.Component<IProps, IState>{
  
 }
 
- _renderCell = (index: number) => {
-  return <div className="cell" />
+CreateonclickHandler = (index: number) => (event: any) =>{
+  console.log("hello world" + index); 
+}
+
+ _renderCell = (index: number, ) => {
+  return <div className="cell" onClick={this.CreateonclickHandler(index)} />
 }
  
  _renderBoard = () => {
   const {board} = this.state;
   return <div className="BoardContainer">{board.map((value, key) => this._renderCell(key))}</div>
 }
-
 
   public render() {
     return (
