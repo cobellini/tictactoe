@@ -41,8 +41,8 @@ CreateOnclickHandler = (index: number) => (event: any) =>{
   this.setState({ board: updatedBoard, playerTurn: 3 - playerTurn}) 
 }
 
-// Renders a cell to represent each index of the board array, receives & passes the current index to allow the onclick handler 
-// to alter the board arrays value at supplied index. (creates all 9(0-8) onclick event listeners and passes in the value of that cell tldr.)
+// Renders a cell to represent each index of the 'board' array. receives & passes the current mapped index value to allow the onclick handler 
+// to alter the 'board' arrays value at the passed index value. (creates all 9(0-8) onclick event listeners and passes in the value of that cell tldr.)
  _renderCell = (index: number) => {
    const {board} = this.state
   return <div className="cell" onClick={this.CreateOnclickHandler(index)} data-player={board[index]}  />
