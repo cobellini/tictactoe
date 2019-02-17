@@ -12,6 +12,7 @@
     "no-empty-interface": false,
     "member-access" : false,
     "variable-name": false,
-    "no-console": false
+    "no-console": false,
+    "object-literal-sort-keys": false
   }
 }

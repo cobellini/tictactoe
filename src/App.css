@@ -49,3 +49,11 @@
 .cell:hover {
   background-color:blue;
 }
+
+.cell[data-player="1"]{
+  background: purple;
+}
+
+.cell[data-player="2"]{
+  background: orange;
+}
