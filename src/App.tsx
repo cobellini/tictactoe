@@ -29,6 +29,11 @@ class App extends React.Component<IProps, IState>{
   playerTurn: Player.One
 }
 
+_playersTurn = () => {
+  const {playerTurn} = this.state;
+  return <div id="PlayerTurnDisplay"><p>It's Player {playerTurn}'s turn.</p></div>
+}
+
 // function that is called during onClick event to create an event handler to edit the state of the application.
 // destructures the state object into seperate variables
 // returns the entire board array into a new constant board variable 
@@ -59,8 +64,9 @@ CreateOnclickHandler = (index: number) => (event: any) =>{
     return (
       <div className="App">
           <div className="BoardContainer">
-            {this._renderBoard()}
+            {this._renderBoard()}          
           </div>
+          {this._playersTurn()}
       </div>
     );
   }

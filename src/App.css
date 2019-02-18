@@ -57,3 +57,7 @@
 .cell[data-player="2"]{
   background: orange;
 }
+
+#PlayerTurnDisplay{
+  margin-top: 100px;
+}
