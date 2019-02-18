@@ -1,6 +1,9 @@
 import * as React from 'react';
 import './App.css';
 
+type ONGOING_GAME = -1;
+const ONGOING_GAME = -1;
+
 // Enum to define which player is currently clicking on what tile
 const enum Player { 
   None = 0,
@@ -11,7 +14,8 @@ const enum Player {
 // Interface to contract state properties.
 interface IState{ 
   board: Player[],
-  playerTurn: Player
+  playerTurn: Player,
+  matchStatus: Player | ONGOING_GAME
 }
 
 // Properties Interface to contract props items.
@@ -26,12 +30,49 @@ class App extends React.Component<IProps, IState>{
 // create an property to store the turn of the player that is calculated based on onclick event handler
  public state = {
   board: [Player.None, Player.None, Player.None, Player.None, Player.None, Player.None, Player.None, Player.None, Player.None],
-  playerTurn: Player.One
+  playerTurn: Player.One,
+  matchStatus: ONGOING_GAME
 }
 
 _playersTurn = () => {
-  const {playerTurn} = this.state;
-  return <div id="PlayerTurnDisplay"><p>It's Player {playerTurn}'s turn.</p></div>
+
+  const {playerTurn, matchStatus} = this.state;
+  const winnerText = matchStatus !== -1 ? `player ${matchStatus} won` : `It's Player ${playerTurn}'s turn`
+ 
+  return <div id="PlayerWinner">{winnerText}</div>;
+}
+
+_checkWinnder = (board: Player[]) =>{
+
+  if(board[0] === board[1] && board[1] === board[2] && board[2] !== Player.None){
+    return board[0];
+  }else if(board[3] === board[4] && board[4] === board[5] && board[5] !== Player.None){
+    return board[3];
+  }else if(board[6] === board[7] && board[7] === board[8] && board[8] !== Player.None){
+    return board[6];
+
+  }else if(board[0] === board[3] && board[3] === board[6] && board[6] !== Player.None){
+    return board[0];
+  }else if(board[1] === board[4] && board[4] === board[7] && board[7] !== Player.None){
+    return board[1];
+  }else if(board[2] === board[5] && board[5] === board[8] && board[8] !== Player.None){
+    return board[2];
+  }
+
+  else if(board[0] === board[4] && board[4] === board[8] && board[8] !== Player.None){
+    return board[0];
+  }else if (board[2] === board[4] && board[4] === board[6] && board[6] !== Player.None){
+    return board[2];
+  }else if(board[6] === board[4] && board[4] === board[2] && board[2] !== Player.None){
+    return board[4];
+  }else if (board[8] === board[4] && board[4] === board[0] && board[0] !== Player.None){
+    return board[8];
+  }
+
+
+
+  return -1;
+  
 }
 
 // function that is called during onClick event to create an event handler to edit the state of the application.
@@ -43,7 +84,9 @@ CreateOnclickHandler = (index: number) => (event: any) =>{
   const {board, playerTurn} = this.state;
   const updatedBoard = board.slice();
   updatedBoard[index] = playerTurn;
-  this.setState({ board: updatedBoard, playerTurn: 3 - playerTurn}) 
+  const matchStatus = this._checkWinnder(updatedBoard);
+  this.setState({ board: updatedBoard, playerTurn: 3 - playerTurn, matchStatus}) 
+
 }
 
 // Renders a cell to represent each index of the 'board' array. receives & passes the current mapped index value to allow the onclick handler 
