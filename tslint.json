@@ -14,5 +14,6 @@
     "variable-name": false,
     "no-console": false,
     "object-literal-sort-keys": false
+    
   }
 }

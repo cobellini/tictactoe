@@ -15,7 +15,8 @@ const enum Player {
 interface IState{ 
   board: Player[],
   playerTurn: Player,
-  matchStatus: Player | ONGOING_GAME
+  matchStatus: Player | ONGOING_GAME,
+  illegalMove: boolean
 }
 
 // Properties Interface to contract props items.
@@ -23,23 +24,42 @@ interface IProps{
 
 }
 
-
 class App extends React.Component<IProps, IState>{
+// Not sure whether to use a constructor or not... apparently it's not best practice - need to look into it more.
+// constructor(props: IProps){
+//   super(props);
+//   this.state = { board: [Player.None, Player.None, Player.None, Player.None, Player.None, Player.None, Player.None, Player.None, Player.None],
+//     playerTurn: Player.One,
+//     matchStatus: ONGOING_GAME}
+// }
 
 // Define state and initialize the game board as an array of Player enums in a 3x3 grid [9 squares]
 // create an property to store the turn of the player that is calculated based on onclick event handler
+
  public state = {
   board: [Player.None, Player.None, Player.None, Player.None, Player.None, Player.None, Player.None, Player.None, Player.None],
   playerTurn: Player.One,
-  matchStatus: ONGOING_GAME
+  matchStatus: ONGOING_GAME,
+  illegalMove: false
 }
 
 _playersTurn = () => {
-
-  const {playerTurn, matchStatus} = this.state;
-  const winnerText = matchStatus !== -1 ? `player ${matchStatus} won` : `It's Player ${playerTurn}'s turn`
  
-  return <div id="PlayerWinner">{winnerText}</div>;
+  const {board, playerTurn, matchStatus, illegalMove} = this.state;
+  let winnerText;
+  if(board.includes(Player.None)){
+    if(illegalMove === false){
+      winnerText = matchStatus !== -1 ? `player ${matchStatus} won` : `It's Player ${playerTurn}'s turn`
+     return <div id="PlayerWinner">{winnerText}</div>;
+   }
+     winnerText = `Illegal Move, try again!`;
+    return <div id="PlayerWinner">{winnerText}</div>;
+  }else{
+    winnerText = `The game is finished, it is a draw!`;
+    return <div id="PlayerWinner">{winnerText}</div>;
+  }
+
+ 
 }
 
 _checkWinnder = (board: Player[]) =>{
@@ -50,16 +70,13 @@ _checkWinnder = (board: Player[]) =>{
     return board[3];
   }else if(board[6] === board[7] && board[7] === board[8] && board[8] !== Player.None){
     return board[6];
-
   }else if(board[0] === board[3] && board[3] === board[6] && board[6] !== Player.None){
     return board[0];
   }else if(board[1] === board[4] && board[4] === board[7] && board[7] !== Player.None){
     return board[1];
   }else if(board[2] === board[5] && board[5] === board[8] && board[8] !== Player.None){
     return board[2];
-  }
-
-  else if(board[0] === board[4] && board[4] === board[8] && board[8] !== Player.None){
+  }else if(board[0] === board[4] && board[4] === board[8] && board[8] !== Player.None){
     return board[0];
   }else if (board[2] === board[4] && board[4] === board[6] && board[6] !== Player.None){
     return board[2];
@@ -69,10 +86,7 @@ _checkWinnder = (board: Player[]) =>{
     return board[8];
   }
 
-
-
   return -1;
-  
 }
 
 // function that is called during onClick event to create an event handler to edit the state of the application.
@@ -82,11 +96,18 @@ _checkWinnder = (board: Player[]) =>{
 // updates state of the new board array values and the players turn
 CreateOnclickHandler = (index: number) => (event: any) =>{
   const {board, playerTurn} = this.state;
-  const updatedBoard = board.slice();
-  updatedBoard[index] = playerTurn;
-  const matchStatus = this._checkWinnder(updatedBoard);
-  this.setState({ board: updatedBoard, playerTurn: 3 - playerTurn, matchStatus}) 
-
+  if(board[index] === Player.None){
+    const updatedBoard = board.slice();
+    updatedBoard[index] = playerTurn;
+    const matchStatus = this._checkWinnder(updatedBoard);
+    this.setState({ board: updatedBoard, playerTurn: 3 - playerTurn, matchStatus, illegalMove: false}) 
+    
+  }else{
+    
+    this.setState({ illegalMove: true})
+    
+  }
+  
 }
 
 // Renders a cell to represent each index of the 'board' array. receives & passes the current mapped index value to allow the onclick handler 
